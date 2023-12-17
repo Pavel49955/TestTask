@@ -24,7 +24,7 @@ namespace ConsoleApp1
 
             {
                 //todo: исправить что бы был вывод названия файла (добавить комментарии для пользователя) 
-                Console.WriteLine(File.ReadAllText(files[i].FullName)); 
+                Console.WriteLine(File.ReadAllText(files[i].FullName));
 
 
 
@@ -32,33 +32,19 @@ namespace ConsoleApp1
                 var text1 = File.ReadAllText(files[i].FullName);
                 MatchCollection matches = regex.Matches(text1);
                 if (matches.Count > 0)
-                { 
+                {
                     Console.WriteLine(matches);
                 }
                 else
                 {
                     Console.WriteLine("Слово не найдено в файле");
                 }
-                
+
             }
             Console.WriteLine("Введите текст который хотите добавить в фаил");
             string text = Console.ReadLine();
             File.WriteAllText("D:\\test\\C#.txt", text);
             Console.ReadLine();
-
-           
-
-
-
-
-
-           
-           
-
-            
-
-            
         }
     }
-
 }
