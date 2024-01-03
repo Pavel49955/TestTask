@@ -1,50 +1,66 @@
 ﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
-using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Diagnostics.Contracts;
+using System.Collections.Generic;
+using System.Timers;
+using System.Transactions;
 
 
-namespace ConsoleApp1
+namespace TestProject
 {
     internal class Program
     {
         static void Main(string[] args)
-
         {
-            Console.WriteLine("Введите ссылку на фаил в котором будет осуществляться поиск слова");
+           
+            var result = "";
+            //string path5 = @"D:\\save\\DSA.txt";
+            Console.WriteLine("Введите путь к фаил в котором будет осуществляться поиск слова.");
             var path = Console.ReadLine();
             DirectoryInfo di = new DirectoryInfo(path);
             FileInfo[] files = di.GetFiles();
-
-            Console.WriteLine("Введите искомое слово");
-
-            string wordForSearch = Console.ReadLine();
-            Regex regex = new Regex(wordForSearch + @"(\w*)");
-            for (int i = 0; i < files.Length; i++)
-
+            Console.WriteLine("Введите слово для осуществелния поиска повторов.");
+            var wordForSearch = Console.ReadLine();
+            Regex regex = new Regex(wordForSearch);
+            foreach (FileInfo file  in files)
             {
-                //todo: исправить что бы был вывод названия файла (добавить комментарии для пользователя) 
-                Console.WriteLine(File.ReadAllText(files[i].FullName));
 
-
-
-
-                var text1 = File.ReadAllText(files[i].FullName);
-                MatchCollection matches = regex.Matches(text1);
-                if (matches.Count > 0)
+                string text = File.ReadAllText(file.FullName);
+                MatchCollection match = regex.Matches(text);
+                if (match.Count > 0)
                 {
-                    Console.WriteLine(matches);
+                    var carentResult = $"В фаиле {file.Name} найдено: {match.Count} совпадений.";
+                    result = result + carentResult;
+                    Console.WriteLine(carentResult);
                 }
-                else
-                {
-                    Console.WriteLine("Слово не найдено в файле");
-                }
-
             }
-            Console.WriteLine("Введите текст который хотите добавить в фаил");
-            string text = Console.ReadLine();
-            File.WriteAllText("D:\\test\\C#.txt", text);
+            Console.WriteLine("Если хотите сохранить фаил в текстовый документ напишите yes:");
+            var answer = Console.ReadLine();
+            if (answer == "yes")
+            {
+                Console.WriteLine("Введите путь к файлу в который будет сохранен результат:");
+                string pathSave = Console.ReadLine();
+                Console.WriteLine("Результат сохранен.");
+                
+                File.WriteAllText(pathSave, result);
+            }
+            else 
+            {
+                Console.WriteLine("Ваш ответ не будет сохранен в фаил.");
+            }
+
+
+
+
+
+
             Console.ReadLine();
+            
         }
-    }
+
+        
+    }   
 }
